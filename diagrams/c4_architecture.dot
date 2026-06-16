@@ -1,0 +1,31 @@
+digraph G {
+  rankdir=LR;
+  graph [fontsize=12, labelloc="t", label="Diagrama C4 - Logística IoT"];
+  node [shape=box, style="rounded,filled", fillcolor="#EEF5FF", fontname="Arial"];
+  edge [fontname="Arial"];
+
+  usuario [label="Usuário / Operador"];
+  simulador [label="Simulador IoT
+GPS + Temperatura + Combustível"];
+  mqtt [label="MQTT Broker
+Mosquitto/HiveMQ"];
+  auth [label="Auth Service
+Python Flask + JWT"];
+  tracking [label="Tracking Service
+Python Flask + MQTT Subscriber"];
+  alert [label="Alert Service
+Consulta e resolve alertas"];
+  mysql [label="MySQL
+Usuários, Veículos, Telemetrias, Alertas", shape=cylinder, fillcolor="#FFF4DF"];
+
+  usuario -> auth [label="login"];
+  auth -> usuario [label="JWT"];
+  usuario -> tracking [label="consulta com JWT"];
+  usuario -> alert [label="alertas com JWT"];
+  simulador -> mqtt [label="publica telemetria"];
+  mqtt -> tracking [label="consome tópico frota/telemetria"];
+  tracking -> mysql [label="persiste dados"];
+  tracking -> alert [label="gera alertas (observer)"];
+  alert -> mysql [label="consulta/atualiza"];
+  auth -> mysql [label="valida usuários"];
+}

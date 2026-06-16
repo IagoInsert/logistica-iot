@@ -1,0 +1,25 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: logistica_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: logistica123
+      MYSQL_DATABASE: logistica_iot
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+      - mysql_data:/var/lib/mysql
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: logistica_mqtt
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+volumes:
+  mysql_data:

@@ -1,0 +1,34 @@
+digraph G {
+  graph [fontsize=12, labelloc="t", label="Diagrama UML - Classes principais"];
+  rankdir=TB;
+  node [shape=record, style="filled", fillcolor="#F6F8FA", fontname="Arial"];
+
+  Usuario [label="{Usuario|id:int
+nome:string
+email:string
+senha_hash:string
+perfil:string}"];
+  Veiculo [label="{Veiculo|id:int
+placa:string
+motorista:string
+status:string}"];
+  Telemetria [label="{Telemetria|id:int
+latitude:decimal
+longitude:decimal
+velocidade:decimal
+temperatura_carga:decimal
+combustivel:decimal
+timestamp_evento:datetime}"];
+  Alerta [label="{Alerta|id:int
+tipo:string
+mensagem:string
+severidade:string
+resolvido:boolean}"];
+  TelemetryFactory [label="{TelemetryFactory|+create(payload):dict}"];
+  AlertObserver [label="{AlertObserver|+notify(telemetria_id, data):void}"];
+
+  Veiculo -> Telemetria [label="1..*"];
+  Telemetria -> Alerta [label="0..*"];
+  TelemetryFactory -> Telemetria [label="cria/normaliza"];
+  AlertObserver -> Alerta [label="gera"];
+}
