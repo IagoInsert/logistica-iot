@@ -1,1 +1,0 @@
-print("Simulador GPS IoT")
